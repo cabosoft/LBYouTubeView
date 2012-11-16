@@ -195,7 +195,31 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
                 else {
                     streamURL = [[videos lastObject] objectForKey:streamURLKey];
                 }
-            }
+  			 	
+				if (stream	URL == nil)
+	            {
+	                NSArray * fmt_stream_map = [video objectForKey:@"fmt_stream_map"];
+
+	//                NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"quality"  ascending:YES];
+	//                [fmt_stream_map sortUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+
+	//                id larger = nil;
+
+	                for (NSDictionary * streamDict in fmt_stream_map)
+	                {
+	//                    id quality = [streamDict objectForKey:@"quality"];
+	                    streamURL = [streamDict objectForKey:@"url"];
+	                    break; // for now take the first one...
+
+	//                    if ((larger == nil) || ([quality compare:larger] > 0))
+	//                    {
+	//                        larger = quality;
+	//                        streamURL = [streamDict objectForKey:@"url"];
+	//                    }                        
+	                }
+
+	            }
+        	}
             
             if (streamURL) {
                 return [NSURL URLWithString:streamURL];
