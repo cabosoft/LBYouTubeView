@@ -7,7 +7,6 @@
 //
 
 #import "LBYouTubeExtractor.h"
-#import "JSONKit.h"
 
 static NSString* const kUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3";
 
@@ -168,9 +167,9 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
         if (NSJSONSerializationClass && [NSJSONSerializationClass respondsToSelector:NSJSONSerializationSelector]) {
             JSONCode = [NSJSONSerialization JSONObjectWithData:[JSON dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&decodingError];
         }
-        else {
-            JSONCode = [JSON objectFromJSONStringWithParseOptions:JKParseOptionNone error:&decodingError];
-        }
+//        else {
+//            JSONCode = [JSON objectFromJSONStringWithParseOptions:JKParseOptionNone error:&decodingError];
+//        }
         
         if (decodingError) {
             // Failed
@@ -196,9 +195,9 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
                     streamURL = [[videos lastObject] objectForKey:streamURLKey];
                 }
   			 	
-				if (stream	URL == nil)
+				if (streamURL == nil)
 	            {
-	                NSArray * fmt_stream_map = [video objectForKey:@"fmt_stream_map"];
+	                NSArray * fmt_stream_map = [[videos lastObject] objectForKey:@"fmt_stream_map"];
 
 	//                NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"quality"  ascending:YES];
 	//                [fmt_stream_map sortUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
