@@ -25,10 +25,16 @@
 -(id)initWithYouTubeURL:(NSURL*)youTubeURL quality:(LBYouTubeVideoQuality)quality;
 -(id)initWithYouTubeID:(NSString*)youTubeID quality:(LBYouTubeVideoQuality)quality;
 
+-(id)initWithPlayerController:(LBYouTubePlayerController*)view youTubeURL:(NSURL*)youTubeURL quality:(LBYouTubeVideoQuality)quality;
+-(id)initWithPlayerController:(LBYouTubePlayerController*)view youTubeID:(NSString*)youTubeID quality:(LBYouTubeVideoQuality)quality;
+
 @end
 @protocol LBYouTubePlayerControllerDelegate <NSObject>
 
 -(void)youTubePlayerViewController:(LBYouTubePlayerViewController *)controller didSuccessfullyExtractYouTubeURL:(NSURL *)videoURL;
 -(void)youTubePlayerViewController:(LBYouTubePlayerViewController *)controller failedExtractingYouTubeURLWithError:(NSError *)error;
+-(void)youTubePlayerViewController:(LBYouTubePlayerViewController *)controller  didStartPlayingYouTubeVideo:(MPMoviePlaybackState)state;
+-(void)youTubePlayerViewController:(LBYouTubePlayerViewController *)controller  didPausePlayingYouTubeVideo:(MPMoviePlaybackState)state;
+-(void)youTubePlayerViewController:(LBYouTubePlayerViewController *)controller  didStopPlayingYouTubeVideo:(MPMoviePlaybackState)state;
 
 @end

@@ -20,6 +20,9 @@
 
 -(void)_didSuccessfullyExtractYouTubeURL:(NSURL*)videoURL;
 -(void)_failedExtractingYouTubeURLWithError:(NSError*)error;
+-(void)_didStartPlayingYouTubeVideo:(MPMoviePlaybackState)state;
+-(void)_didPausePlayingYouTubeVideo:(MPMoviePlaybackState)state;
+-(void)_didStopPlayingYouTubeVideo:(MPMoviePlaybackState)state;
 
 @end
 @implementation LBYouTubePlayerViewController
@@ -55,10 +58,40 @@
     return self;
 }
 
+-(id)initWithPlayerController:(LBYouTubePlayerController*)_view youTubeURL:(NSURL*)youTubeURL quality:(LBYouTubeVideoQuality)quality
+{
+    self = [self initWithYouTubeURL:youTubeURL quality:quality];
+    
+    if (self) {
+        self.view = _view;
+    }
+    return self;
+}
+
+-(id)initWithPlayerController:(LBYouTubePlayerController*)_view youTubeID:(NSString*)youTubeID quality:(LBYouTubeVideoQuality)quality
+{
+    self = [self initWithYouTubeID:youTubeID quality:quality];
+    
+    if (self) {
+        self.view = _view;
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self.view.videoController stop];
+}
+
 -(void)_setupWithYouTubeURL:(NSURL *)URL quality:(LBYouTubeVideoQuality)quality {
     self.view = nil;
     self.delegate = nil;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_controllerPlaybackStateChanged:) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_controllerPlayBackDidFinish:) name:MPMoviePlayerPlaybackDidFinishNotification  object:nil];
+
     self.extractor = [[LBYouTubeExtractor alloc] initWithURL:URL quality:quality];
     self.extractor.delegate = self;
     [self.extractor startExtracting];
@@ -69,6 +102,51 @@
 
 -(void)_loadVideoWithURL:(NSURL *)videoURL {
     [self.view loadYouTubeVideo:videoURL];
+}
+
+-(void)_controllerPlaybackStateChanged:(NSNotification *)__unused notification {
+    MPMoviePlayerController *moviePlayer = notification.object;
+    MPMoviePlaybackState currentState = moviePlayer.playbackState;
+    
+    if (currentState == MPMoviePlaybackStateStopped)
+    {
+        [self _didStopPlayingYouTubeVideo:currentState];
+    }
+    else if (currentState == MPMoviePlaybackStatePaused)
+    {
+        [self _didPausePlayingYouTubeVideo:currentState];
+    }
+    else if (currentState == MPMoviePlaybackStateInterrupted)
+    {
+        [self _didPausePlayingYouTubeVideo:currentState];
+    }
+    else if (currentState == MPMoviePlaybackStatePlaying)
+    {
+        [self _didStartPlayingYouTubeVideo:currentState];
+    }
+}
+
+- (void) _controllerPlayBackDidFinish:(NSNotification*)__unused notification
+{
+    [self _didStopPlayingYouTubeVideo:MPMoviePlaybackStateStopped];
+}
+
+-(void)_didStartPlayingYouTubeVideo:(MPMoviePlaybackState)state {
+    if ([self.delegate respondsToSelector:@selector(youTubePlayerViewController:didStartPlayingYouTubeVideo:)]) {
+        [self.delegate youTubePlayerViewController:self didStartPlayingYouTubeVideo:state];
+    }
+}
+
+-(void)_didPausePlayingYouTubeVideo:(MPMoviePlaybackState)state {
+    if ([self.delegate respondsToSelector:@selector(youTubePlayerViewController:didPausePlayingYouTubeVideo:)]) {
+        [self.delegate youTubePlayerViewController:self didPausePlayingYouTubeVideo:state];
+    }
+}
+
+-(void)_didStopPlayingYouTubeVideo:(MPMoviePlaybackState)state {
+    if ([self.delegate respondsToSelector:@selector(youTubePlayerViewController:didStopPlayingYouTubeVideo:)]) {
+        [self.delegate youTubePlayerViewController:self didStopPlayingYouTubeVideo:state];
+    }
 }
 
 #pragma mark -
