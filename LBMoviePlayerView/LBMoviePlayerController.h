@@ -12,10 +12,11 @@
 #import <UIKit/UIKit.h>
 #import "LBMoviePlayerView.h"
 
-@interface LBMoviePlayerController : TTViewController <LBMoviePlayerViewDelegate>
+@interface LBMoviePlayerController : UIViewController <LBMoviePlayerViewDelegate>
 {
+@protected
     NSString* mMovieURL;
-    TTActivityLabel * mActivityLabel;
+    UIActivityIndicatorView * mActivityLabel;
 }
 
 @property (nonatomic, strong) IBOutlet LBMoviePlayerView* moviePlayerView;

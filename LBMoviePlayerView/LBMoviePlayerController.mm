@@ -49,21 +49,21 @@
     self.moviePlayerView.delegate = nil;
     
     self.movieURL= nil; 
-    TT_RELEASE_SAFELY(mActivityLabel);
-
+    RELEASE_SAFELY(mActivityLabel);
 }
 
-- (void) addActivityLabelWithStyle:(TTActivityLabelStyle)style
+- (void) addActivityLabelWithStyle:(UIActivityIndicatorViewStyle) style
 {
     REQUIRE(mActivityLabel == nil);
     
     CGRect frame = self.view.frame;
     
-    mActivityLabel = [[TTActivityLabel alloc] initWithStyle2:style];
-    mActivityLabel.text = @"Loading...";
-    
+    mActivityLabel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
     [mActivityLabel sizeToFit];
-    mActivityLabel.frame = CGRectMake(0,  (frame.size.height - mActivityLabel.height) / 2, self.view.width, mActivityLabel.height);
+    
+    mActivityLabel.center = self.view.center;
+    [mActivityLabel startAnimating];
+
     [self.view addSubview:mActivityLabel];
 }
 
@@ -72,17 +72,17 @@
     if ((movieURL == nil) || (movieURL.length == 0))
     {
         [self.moviePlayerView stop];
-        TT_RELEASE_SAFELY(mMovieURL)
+        RELEASE_SAFELY(mMovieURL)
         mMovieURL = nil;
     }
     else if ((self.movieURL == nil) || ([self.movieURL compare:movieURL] != 0))
     {
         [moviePlayerView stop];  
-        TT_RELEASE_SAFELY(mMovieURL)
+        RELEASE_SAFELY(mMovieURL)
         mMovieURL = movieURL;
         
         // load the app content on a thread, with activity label
-        [self addActivityLabelWithStyle:TTActivityLabelStyleBlackBezel];
+        [self addActivityLabelWithStyle:UIActivityIndicatorViewStyleWhiteLarge];
         
         [self.moviePlayerView loadMoviePlayerURL:[NSURL URLWithString:mMovieURL]];
         [self.moviePlayerView play];
@@ -91,7 +91,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-	return TTIsSupportedOrientation(interfaceOrientation);
+	return NIIsSupportedOrientation(interfaceOrientation);
 }
 
 - (BOOL)shouldAutorotate
@@ -101,7 +101,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (TTIsPad())
+    if (NIIsPad())
     {
         return  UIInterfaceOrientationMaskAll;
     }
@@ -121,7 +121,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        TT_RELEASE_SAFELY(mActivityLabel);
+        RELEASE_SAFELY(mActivityLabel);
     }
 
     NSLog(@"Failed loading video due to error:%@", error.localizedDescription);
@@ -132,7 +132,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        TT_RELEASE_SAFELY(mActivityLabel);
+        RELEASE_SAFELY(mActivityLabel);
     }
 
     NSLog(@"Did start playing moviePlayer video");
@@ -143,7 +143,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        TT_RELEASE_SAFELY(mActivityLabel);
+        RELEASE_SAFELY(mActivityLabel);
     }
 
     NSLog(@"Did pause playing moviePlayer video");
@@ -154,7 +154,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        TT_RELEASE_SAFELY(mActivityLabel);
+        RELEASE_SAFELY(mActivityLabel);
     }
 
     NSLog(@"Did finish playing moviePlayer video");
