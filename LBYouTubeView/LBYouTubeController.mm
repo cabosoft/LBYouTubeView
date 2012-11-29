@@ -59,9 +59,7 @@
 - (void) addActivityLabelWithStyle:(UIActivityIndicatorViewStyle) style
 {
     REQUIRE(mActivityLabel == nil);
-    
-    CGRect frame = self.view.frame;
-    
+        
     mActivityLabel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
     [mActivityLabel sizeToFit];
     
