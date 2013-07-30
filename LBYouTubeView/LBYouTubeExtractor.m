@@ -142,7 +142,7 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
 
 -(NSURL*)_extractYouTubeURLFromFile:(NSString *)html error:(NSError *__autoreleasing *)error {
     NSString *JSONStart = nil;
-    NSString *JSONStartFull = @"ls.setItem('PIGGYBACK_DATA', \")]}'";
+	NSString *JSONStartFull = @"bootstrap_data = \")]}'";
     NSString *JSONStartShrunk = [JSONStartFull stringByReplacingOccurrencesOfString:@" " withString:@""];
     if ([html rangeOfString:JSONStartFull].location != NSNotFound)
         JSONStart = JSONStartFull;
@@ -155,7 +155,9 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
         [scanner scanString:JSONStart intoString:nil];
         
         NSString *JSON = nil;
-        [scanner scanUpToString:@"\");" intoString:&JSON];
+		[scanner scanUpToString:@"}\";" intoString:&JSON];
+		
+		JSON = [NSString stringWithFormat:@"%@}",JSON]; // Add closing bracket } to get vallid JSON again
         JSON = [self _unescapeString:JSON];
         NSError* decodingError = nil;
         NSDictionary* JSONCode = nil;
