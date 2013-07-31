@@ -121,6 +121,16 @@
     }
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+										 duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (mActivityLabel != nil)
+	{
+		mActivityLabel.center = self.view.center;
+	}
+}
+
 
 -(void)youTubePlayerViewController:(LBYouTubePlayerViewController *)controller didSuccessfullyExtractYouTubeURL:(NSURL *)videoURL
 {

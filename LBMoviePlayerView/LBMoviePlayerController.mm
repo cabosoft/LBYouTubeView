@@ -109,6 +109,15 @@
     }
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+										 duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (mActivityLabel != nil)
+	{
+		mActivityLabel.center = self.view.center;
+	}
+}
 
 -(void)moviePlayerView:(LBMoviePlayerView *)moviePlayerView didSuccessfullyExtractmovieURL:(NSURL *)videoURL {
     NSLog(@"Did extract video source:%@", videoURL);
