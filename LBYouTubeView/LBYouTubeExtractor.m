@@ -182,7 +182,13 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
             // Success
             
             NSArray* videos = [[[JSONCode objectForKey:@"content"] objectForKey:@"video"] objectForKey:@"fmt_stream_map"];
-            NSString* streamURL = nil;
+ 			
+			if (videos.count == 0)
+			{
+				videos = [[[JSONCode objectForKey:@"content"] objectForKey:@"player_data"] objectForKey:@"fmt_stream_map"];
+			}
+			
+           NSString* streamURL = nil;
             if (videos.count) {
                 NSString* streamURLKey = @"url";
                 
