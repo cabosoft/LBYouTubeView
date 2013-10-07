@@ -83,6 +83,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self.view.videoController stop];
+
+    [self.extractor stopExtracting];
+    self.extractor.delegate = nil;
 }
 
 -(void)_setupWithYouTubeURL:(NSURL *)URL quality:(LBYouTubeVideoQuality)quality {

@@ -42,6 +42,9 @@
     [self.youTubeView.videoController stop];
     self.youTubeView= nil; 
 
+	self.controller.delegate = nil;
+	self.controller = nil;
+
     [super viewDidUnload];
 }
 
