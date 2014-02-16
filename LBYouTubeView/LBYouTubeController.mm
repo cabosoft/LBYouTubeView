@@ -109,7 +109,7 @@
 
 - (BOOL)shouldAutorotate
 {
-    return [self shouldAutorotateToInterfaceOrientation:NIInterfaceOrientation()];
+	return YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -125,7 +125,8 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-										 duration:(NSTimeInterval)duration {
+										 duration:(NSTimeInterval)duration
+{
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
 	if (mActivityLabel != nil)
