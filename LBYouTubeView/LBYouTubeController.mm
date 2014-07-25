@@ -56,7 +56,7 @@
     self.controller= nil;
     
     self.youTubeURL= nil; 
-    RELEASE_SAFELY(mActivityLabel);
+    mActivityLabel = nil;
 }
 
 - (void) addActivityLabelWithStyle:(UIActivityIndicatorViewStyle) style
@@ -78,7 +78,6 @@
     if ((youTubeURL == nil) || (youTubeURL.length == 0))
     {
         [self.youTubeView.videoController stop];
-        RELEASE_SAFELY(mYouTubeURL)
         mYouTubeURL = nil;
 
         self.controller.delegate = nil;
@@ -87,7 +86,6 @@
     else if ((self.youTubeURL == nil) || ([self.youTubeURL compare:youTubeURL] != 0))
     {
         [self.youTubeView.videoController stop];
-        RELEASE_SAFELY(mYouTubeURL)
         mYouTubeURL = youTubeURL;
 
         self.controller.delegate = nil;
@@ -102,9 +100,43 @@
     }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
++(BOOL) isPad
 {
-	return NIIsSupportedOrientation(interfaceOrientation);
+	static NSInteger isPad = -1;
+	if (isPad < 0)
+	{
+		isPad = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? 1 : 0;
+	}
+	return isPad > 0;
+}
+
+
++(BOOL) isSupportedOrientation:(UIInterfaceOrientation) orientation
+{
+	if ([LBYouTubeController isPad])
+	{
+		return YES;
+		
+	}
+	else
+	{
+		switch (orientation)
+		{
+			case UIInterfaceOrientationPortrait:
+			case UIInterfaceOrientationLandscapeLeft:
+			case UIInterfaceOrientationLandscapeRight:
+				return YES;
+			default:
+				return NO;
+		}
+	}
+}
+
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return [LBYouTubeController isSupportedOrientation:interfaceOrientation];
 }
 
 - (BOOL)shouldAutorotate
@@ -114,7 +146,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (NIIsPad())
+    if ([LBYouTubeController isPad])
     {
         return  UIInterfaceOrientationMaskAll;
     }
@@ -147,7 +179,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Failed loading video due to error:%@", error.localizedDescription);
@@ -158,7 +190,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Did start playing YouTube video");
@@ -169,7 +201,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Did pause playing YouTube video");
@@ -180,7 +212,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Did finish playing YouTube video");
