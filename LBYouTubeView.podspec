@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.summary      = "A UIView subclass that displays YouTube videos using a MPMoviePlayerController."
   s.homepage     = "https://github.com/cabosoft/LBYouTubeView"
   s.author       = 'Laurin Brandner'
-  s.source       = { :git => "https://github.com/cabosoft/LBYouTubeView.git", :branch => 'master', :tag => "v0.0.2" }
+  s.source       = { :git => "https://github.com/cabosoft/LBYouTubeView.git", :branch => 'master' }
   s.source_files = "LBYouTubeView/**/*.{h,m}", "LBMoviePlayerView/**/*.{h,mm}"
   s.requires_arc = true
   s.framework  = 'MediaPlayer'
