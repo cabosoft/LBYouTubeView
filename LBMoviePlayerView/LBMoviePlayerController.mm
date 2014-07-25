@@ -49,7 +49,7 @@
     self.moviePlayerView.delegate = nil;
     
     self.movieURL= nil; 
-    RELEASE_SAFELY(mActivityLabel);
+    mActivityLabel = nil;
 }
 
 - (void) addActivityLabelWithStyle:(UIActivityIndicatorViewStyle) style
@@ -70,13 +70,11 @@
     if ((movieURL == nil) || (movieURL.length == 0))
     {
         [self.moviePlayerView stop];
-        RELEASE_SAFELY(mMovieURL)
         mMovieURL = nil;
     }
     else if ((self.movieURL == nil) || ([self.movieURL compare:movieURL] != 0))
     {
         [moviePlayerView stop];  
-        RELEASE_SAFELY(mMovieURL)
         mMovieURL = movieURL;
         
         // load the app content on a thread, with activity label
@@ -87,9 +85,45 @@
     }
 }
 
+
+
++(BOOL) isPad
+{
+	static NSInteger isPad = -1;
+	if (isPad < 0)
+	{
+		isPad = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? 1 : 0;
+	}
+	return isPad > 0;
+}
+
+
++(BOOL) isSupportedOrientation:(UIInterfaceOrientation) orientation
+{
+	if ([LBMoviePlayerController isPad])
+	{
+		return YES;
+		
+	}
+	else
+	{
+		switch (orientation)
+		{
+			case UIInterfaceOrientationPortrait:
+			case UIInterfaceOrientationLandscapeLeft:
+			case UIInterfaceOrientationLandscapeRight:
+				return YES;
+			default:
+				return NO;
+		}
+	}
+}
+
+
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-	return NIIsSupportedOrientation(interfaceOrientation);
+	return [LBMoviePlayerController isSupportedOrientation:interfaceOrientation];
 }
 
 - (BOOL)shouldAutorotate
@@ -99,7 +133,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (NIIsPad())
+	if ([LBMoviePlayerController isPad])
     {
         return  UIInterfaceOrientationMaskAll;
     }
@@ -128,7 +162,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Failed loading video due to error:%@", error.localizedDescription);
@@ -139,7 +173,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Did start playing moviePlayer video");
@@ -150,7 +184,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Did pause playing moviePlayer video");
@@ -161,7 +195,7 @@
     if (mActivityLabel)
     {
         [mActivityLabel removeFromSuperview];
-        RELEASE_SAFELY(mActivityLabel);
+        mActivityLabel = nil;
     }
 
     NSLog(@"Did finish playing moviePlayer video");
