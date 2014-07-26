@@ -8,6 +8,7 @@ Pod::Spec.new do |s|
   s.author       = 'Laurin Brandner'
   s.source       = { :git => "https://github.com/cabosoft/LBYouTubeView.git", :branch => 'master' }
   s.source_files = "LBYouTubeView/**/*.{h,m,mm}", "LBMoviePlayerView/**/*.{h,m,mm}"
+  s.resources    = '*.lproj'
   s.requires_arc = true
   s.framework  = 'MediaPlayer'
 end
