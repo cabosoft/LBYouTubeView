@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.author       = 'Laurin Brandner'
   s.source       = { :git => "https://github.com/cabosoft/LBYouTubeView.git", :tag => 'podspec-2.0.3' }
   s.ios.source_files = "LBYouTubeView/**/*.{h,m,mm}", "LBMoviePlayerView/**/*.{h,m,mm}"
-  s.ios.resources    = "LBYouTubeView/**/*.lproj", "LBMoviePlayerView/**/*.lproj"
-  s.ios.preserve_paths = "LBYouTubeView/**/*.lproj", "LBMoviePlayerView/**/*.lproj"
+  s.ios.resources    = "LBYouTubeView/**/*.lproj/*.xib", "LBMoviePlayerView/**/*.lproj/*.xib"
+  s.ios.preserve_paths = "LBYouTubeView/**/*.lproj/*.xib", "LBMoviePlayerView/**/*.lproj/*.xib"
   s.ios.requires_arc = true
   s.ios.framework  = 'MediaPlayer'
 end
