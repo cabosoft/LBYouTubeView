@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.ios.framework  = 'MediaPlayer'
 
   s.subspec 'LBYouTubeView' do |ss|
-    ss.ios.deployment_target = '7.0'
+    ss.ios.deployment_target = '5.0'
     ss.source_files = "LBYouTubeView/*.{h,m,mm}"
     ss.dependency 'cabolib-ios/Core'
   	s.ios.framework  = 'MediaPlayer'
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
    end
 
   s.subspec 'LBMoviePlayerView' do |ss|
-    ss.ios.deployment_target = '7.0'
+    ss.ios.deployment_target = '5.0'
     ss.source_files = "LBMoviePlayerView/*.{h,m,mm}"
     ss.dependency 'cabolib-ios/Core'
   	s.ios.framework  = 'MediaPlayer'
