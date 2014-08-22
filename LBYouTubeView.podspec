@@ -12,36 +12,37 @@ Pod::Spec.new do |s|
   s.ios.framework  = 'MediaPlayer'
 
   s.subspec 'LBYouTubeView' do |ss|
+
     ss.ios.deployment_target = '5.0'
     ss.source_files = "LBYouTubeView/*.{h,m,mm}"
-    ss.dependency 'cabolib-ios/Core'
   	s.ios.framework  = 'MediaPlayer'
   	ss.requires_arc = true
-    ss.dependency 'LBYouTubeView/Localization'
- 
-	s.subspec 'Localization' do |t|
-	    %w|en es|.map {|localename|
-	      t.subspec localename do |u|
-	        u.ios.resources = "LBYouTubeView/#{localename}.lproj"
-	        u.ios.preserve_paths = "LBYouTubeView/#{localename}.lproj" 
-	     end
-	    }
-	  end
+    ss.dependency 'LBYouTubeView/LBYouTubeView/en.lproj'
+    ss.dependency 'LBYouTubeView/LBYouTubeView/es.lproj'
+
+	ss.subspec "en.lproj" do |en|
+	  en.resources      = 'LBYouTubeView/en.lproj/*.xib'
+	  # en.preserve_paths = 'LBYouTubeView/en.lproj'
+	end
+
+	ss.subspec "es.lproj" do |en|
+	  en.resources      = 'LBYouTubeView/es.lproj/*.xib'
+	  # en.preserve_paths = 'LBYouTubeView/es.lproj'
+	end
    end
 
   s.subspec 'LBMoviePlayerView' do |ss|
     ss.ios.deployment_target = '5.0'
     ss.source_files = "LBMoviePlayerView/*.{h,m,mm}"
-    ss.dependency 'cabolib-ios/Core'
   	s.ios.framework  = 'MediaPlayer'
   	ss.requires_arc = true
-    ss.dependency 'LBMoviePlayerView/Localization'
+    ss.dependency 'LBYouTubeView/LBMoviePlayerView/Localization'
 
-	s.subspec 'Localization' do |t|
+	ss.subspec 'Localization' do |t|
 	    %w|en es|.map {|localename|
 	      t.subspec localename do |u|
-	        u.ios.resources = "REActivityViewController/Localizations/#{localename}.lproj"
-	        u.ios.preserve_paths = "REActivityViewController/Localizations/#{localename}.lproj" 
+	        u.ios.resources = "LBMoviePlayerView/#{localename}.lproj"
+	        u.ios.preserve_paths = "LBMoviePlayerView/#{localename}.lproj" 
 	     end
 	    }
 	  end
