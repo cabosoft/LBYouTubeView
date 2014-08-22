@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
     ss.dependency 'cabolib-ios/Core'
   	s.ios.framework  = 'MediaPlayer'
   	ss.requires_arc = true
-    ss.dependency 'LBYouTubeView/Localization'
+    ss.dependency 'LBMoviePlayerView/Localization'
 
 	s.subspec 'Localization' do |t|
 	    %w|en es|.map {|localename|
