@@ -21,12 +21,12 @@ Pod::Spec.new do |s|
     ss.dependency 'LBYouTubeView/LBYouTubeView/es.lproj'
 
 	ss.subspec "en.lproj" do |en|
-	  en.resources      = 'LBYouTubeView/en.lproj/*.xib'
+	  en.resources      = 'LBYouTubeView/en.lproj'
 	  en.preserve_paths = 'LBYouTubeView/en.lproj'
 	end
 
 	ss.subspec "es.lproj" do |es|
-	  es.resources      = 'LBYouTubeView/es.lproj/*.xib'
+	  es.resources      = 'LBYouTubeView/es.lproj'
 	  es.preserve_paths = 'LBYouTubeView/es.lproj'
 	end
    end
@@ -41,7 +41,7 @@ Pod::Spec.new do |s|
 	ss.subspec 'Localization' do |t|
 	    %w|en es|.map {|localename|
 	      t.subspec localename do |u|
-	        u.ios.resources = "LBMoviePlayerView/#{localename}.lproj\*.xib"
+	        u.ios.resources = "LBMoviePlayerView/#{localename}.lproj"
 	        u.ios.preserve_paths = "LBMoviePlayerView/#{localename}.lproj" 
 	     end
 	    }
