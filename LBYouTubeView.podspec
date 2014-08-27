@@ -17,18 +17,16 @@ Pod::Spec.new do |s|
     ss.source_files = "LBYouTubeView/*.{h,m,mm}"
   	s.ios.framework  = 'MediaPlayer'
   	ss.requires_arc = true
-    ss.dependency 'LBYouTubeView/LBYouTubeView/en.lproj'
-    ss.dependency 'LBYouTubeView/LBYouTubeView/es.lproj'
+    ss.dependency 'LBYouTubeView/LBYouTubeView/Localization'
 
-	ss.subspec "en.lproj" do |en|
-	  en.resources      = 'LBYouTubeView/en.lproj'
-	  en.preserve_paths = 'LBYouTubeView/en.lproj'
-	end
-
-	ss.subspec "es.lproj" do |es|
-	  es.resources      = 'LBYouTubeView/es.lproj'
-	  es.preserve_paths = 'LBYouTubeView/es.lproj'
-	end
+	ss.subspec 'Localization' do |t|
+	    %w|en es|.map {|localename|
+	      t.subspec localename do |u|
+	        u.ios.resources = "LBYouTubeView/#{localename}.lproj"
+	        u.ios.preserve_paths = "LBYouTubeView/#{localename}.lproj" 
+	     end
+	    }
+	  end
    end
 
   s.subspec 'LBMoviePlayerView' do |ss|
