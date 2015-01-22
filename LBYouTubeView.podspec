@@ -16,16 +16,18 @@ Pod::Spec.new do |s|
     ss.source_files = "LBYouTubeView/*.{h,m,mm}"
   	ss.ios.framework  = 'MediaPlayer'
   	ss.requires_arc = true
-    ss.dependency 'LBYouTubeView/LBYouTubeView/Localization'
+    # ss.dependency 'LBYouTubeView/LBYouTubeView/Localization'
+	ss.ios.resources = "LBYouTubeView/en.lproj", "LBYouTubeView/es.lproj"
+	ss.ios.preserve_paths = "LBYouTubeView/en.lproj", "LBYouTubeView/es.lproj"
 
-	ss.subspec 'Localization' do |t|
-	    %w|en es|.map {|localename|
-	      t.subspec localename do |u|
-	        u.ios.resources = "LBYouTubeView/#{localename}.lproj"
-	        u.ios.preserve_paths = "LBYouTubeView/#{localename}.lproj" 
-	     end
-	    }
-	  end
+	# ss.subspec 'Localization' do |t|
+	#     %w|en es|.map {|localename|
+	#       t.subspec localename do |u|
+	#         u.ios.resources = "LBYouTubeView/#{localename}.lproj"
+	#         u.ios.preserve_paths = "LBYouTubeView/#{localename}.lproj"
+	#      end
+	#     }
+	#   end
    end
 
   s.subspec 'LBMoviePlayerView' do |ss|
@@ -33,15 +35,17 @@ Pod::Spec.new do |s|
     ss.source_files = "LBMoviePlayerView/*.{h,m,mm}"
   	ss.ios.framework  = 'MediaPlayer'
   	ss.requires_arc = true
-    ss.dependency 'LBYouTubeView/LBMoviePlayerView/Localization'
+    # ss.dependency 'LBYouTubeView/LBMoviePlayerView/Localization'
+	ss.ios.resources = "LBMoviePlayerView/en.lproj", "LBMoviePlayerView/es.lproj"
+	ss.ios.preserve_paths = "LBMoviePlayerView/en.lproj", "LBMoviePlayerView/es.lproj"
 
-	ss.subspec 'Localization' do |t|
-	    %w|en es|.map {|localename|
-	      t.subspec localename do |u|
-	        u.ios.resources = "LBMoviePlayerView/#{localename}.lproj"
-	        u.ios.preserve_paths = "LBMoviePlayerView/#{localename}.lproj" 
-	     end
-	    }
-	  end
+	# ss.subspec 'Localization' do |t|
+	#     %w|en es|.map {|localename|
+	#       t.subspec localename do |u|
+	#         u.ios.resources = "LBMoviePlayerView/#{localename}.lproj"
+	#         u.ios.preserve_paths = "LBMoviePlayerView/#{localename}.lproj"
+	#      end
+	#     }
+	#   end
    end
 end
