@@ -180,60 +180,64 @@ NSInteger const LBYouTubePlayerExtractorErrorCodeNoJSONData   =    3;
         }
         else {
             // Success
-            
-            NSArray* videos = [[[JSONCode objectForKey:@"content"] objectForKey:@"video"] objectForKey:@"fmt_stream_map"];
- 			
-			if (videos.count == 0)
-			{
-				videos = [[[JSONCode objectForKey:@"content"] objectForKey:@"player_data"] objectForKey:@"fmt_stream_map"];
-			}
 			
-           NSString* streamURL = nil;
-            if (videos.count) {
-                NSString* streamURLKey = @"url";
-                
-                if (self.quality == LBYouTubeVideoQualityLarge) {
-                    streamURL = [[videos objectAtIndex:0] objectForKey:streamURLKey];
-                }
-                else if (self.quality == LBYouTubeVideoQualityMedium) {
-                    NSUInteger index = MAX(0, videos.count-2);
-                    streamURL = [[videos objectAtIndex:index] objectForKey:streamURLKey];
-                }
-                else {
-                    streamURL = [[videos lastObject] objectForKey:streamURLKey];
-                }
-  			 	
-				if (streamURL == nil)
-	            {
-	                NSArray * fmt_stream_map = [[videos lastObject] objectForKey:@"fmt_stream_map"];
+			NSDictionary * contents = [JSONCode objectForKey:@"content"];
+			NSDictionary * swfcfg = [contents objectForKey:@"swfcfg"];
+			NSDictionary * args = [swfcfg objectForKey:@"args"];
+			NSString* urlEncodedFmtStreamMap = [args objectForKey:@"url_encoded_fmt_stream_map"];
 
-	//                NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"quality"  ascending:YES];
-	//                [fmt_stream_map sortUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+			NSString* streamURL = nil;
+			NSString *type = NULL;
+			NSString *urlSeg1 = NULL;
+			NSString *sig = NULL;
 
-	//                id larger = nil;
+			if (urlEncodedFmtStreamMap)
+			{
+				NSArray *formats = [urlEncodedFmtStreamMap componentsSeparatedByString:@","];
+				
+				for (NSString *item in formats)
+				{
+					type = NULL;
+					urlSeg1 = NULL;
+					sig = NULL;
+					
+					NSArray *pairs = [item componentsSeparatedByString:@"&"];
+					for (NSString *pair in pairs)
+					{
+						NSArray *varComps = [pair componentsSeparatedByString:@"="];
+						NSString *varName = [varComps objectAtIndex: 0];
+						NSString *varValue = [[varComps objectAtIndex: 1] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+						if ([varName isEqualToString: @"type"])
+						{
+							NSArray *typeSegments = [varValue componentsSeparatedByString: @";"];
+							type = [typeSegments objectAtIndex:0];
+						}
+						else if ([varName isEqualToString: @"url"])
+						{
+							urlSeg1 = [varValue stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+						}
+						else if ([varName isEqualToString: @"sig"])
+						{
+							sig = varValue;
+						}
+					}
 
-	                for (NSDictionary * streamDict in fmt_stream_map)
-	                {
-	//                    id quality = [streamDict objectForKey:@"quality"];
-	                    streamURL = [streamDict objectForKey:@"url"];
-	                    break; // for now take the first one...
+					streamURL = urlSeg1;
 
-	//                    if ((larger == nil) || ([quality compare:larger] > 0))
-	//                    {
-	//                        larger = quality;
-	//                        streamURL = [streamDict objectForKey:@"url"];
-	//                    }                        
-	                }
+					if (sig)
+					{
+						streamURL = [[urlSeg1 stringByAppendingString: @"&signature="] stringByAppendingString: sig];
+						break;
+					}
+				}
+			}
 
-	            }
-        	}
-            
             if (streamURL) {
                 return [NSURL URLWithString:streamURL];
             }
             else {
                 // Give it another shot and just look for a video URL that might match
-                
+				
                 *error = [NSError errorWithDomain:kLBYouTubePlayerExtractorErrorDomain code:2 userInfo:[NSDictionary dictionaryWithObject:@"Couldn't find the stream URL." forKey:NSLocalizedDescriptionKey]];
             }
         }
