@@ -7,6 +7,7 @@
 //
 
 #import "LBYouTubePlayerController.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface LBYouTubePlayerController () 
 
@@ -57,11 +58,14 @@
         [self.videoController.view removeFromSuperview];
     }
     
-    self.videoController = [[MPMoviePlayerController alloc] initWithContentURL:URL];
+	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+
+	self.videoController = [[MPMoviePlayerController alloc] initWithContentURL:URL];
     [self.videoController prepareToPlay];
     self.videoController.view.frame = self.bounds;
     self.videoController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:self.videoController.view];
+
 }
 
 #pragma mark -
